@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="centered-container">
+    <h1>Edit Profile</h1>
+    <div id="error" class="error"></div>
+    <div id="success" class="success"></div>
+    <form id="editForm">
+      <label>Name</label>
+      <input type="text" id="name" required>
+      <label>Mobile</label>
+      <input type="text" id="mobile" required pattern="[0-9]{10}">
+      <label>Address</label>
+      <input type="text" id="address" required>
+      <button type="submit">Save</button>
+    </form>
+    <a href="dashboard.html" class="link">Back to Dashboard</a>
+  </div>
+  <script src="assets/script.js"></script>
+  <script>
+    const email = getCurrentUser();
+    if (!email) window.location.href = 'login.html';
+    const user = getUser(email);
+    if (user) {
+      name.value = user.name;
+      mobile.value = user.mobile;
+      address.value = user.address;
+    }
+    document.getElementById('editForm').onsubmit = function(e) {
+      e.preventDefault();
+      clearMessages();
+      const nameInput = document.getElementById('name');
+      const mobileInput = document.getElementById('mobile');
+      const addressInput = document.getElementById('address');
+      const newName = nameInput.value.trim();
+      const newMobile = mobileInput.value.trim();
+      const newAddress = addressInput.value.trim();
+      if (!newName || !newMobile || !newAddress) {
+        showError('All fields are required.'); return;
+      }
+      if (!/^\d{10}$/.test(newMobile)) {
+        showError('Mobile must be 10 digits.'); return;
+      }
+      user.name = newName;
+      user.mobile = newMobile;
+      user.address = newAddress;
+      setUser(email, user);
+      showSuccess('Profile updated successfully!');
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="centered-container">
+    <h1>Signup</h1>
+    <div id="error" class="error"></div>
+    <form id="signupForm">
+      <label>Name</label>
+      <input type="text" id="name" required>
+      <label>Email</label>
+      <input type="email" id="email" required>
+      <label>Mobile</label>
+      <input type="text" id="mobile" required pattern="[0-9]{10}">
+      <label>Password</label>
+      <input type="password" id="password" required minlength="6">
+      <label>Address</label>
+      <input type="text" id="address" required>
+      <button type="submit">Signup</button>
+    </form>
+    <a href="login.html" class="link">Already have an account? Login</a>
+  </div>
+  <script src="assets/script.js"></script>
+  <script>
+    document.getElementById('signupForm').onsubmit = function(e) {
+      e.preventDefault();
+      clearMessages();
+      const nameInput = document.getElementById('name');
+      const emailInput = document.getElementById('email');
+      const mobileInput = document.getElementById('mobile');
+      const passwordInput = document.getElementById('password');
+      const addressInput = document.getElementById('address');
+      const nameVal = nameInput.value.trim();
+      const emailVal = emailInput.value.trim().toLowerCase();
+      const mobileVal = mobileInput.value.trim();
+      const passwordVal = passwordInput.value;
+      const addressVal = addressInput.value.trim();
+      if (!nameVal || !emailVal || !mobileVal || !passwordVal || !addressVal) {
+        showError('All fields are required.'); return;
+      }
+      if (!validateEmail(emailVal)) {
+        showError('Invalid email format.'); return;
+      }
+      if (!/^\d{10}$/.test(mobileVal)) {
+        showError('Mobile must be 10 digits.'); return;
+      }
+      if (getUser(emailVal)) {
+        showError('Email already registered.'); return;
+      }
+      setUser(emailVal, { name: nameVal, email: emailVal, mobile: mobileVal, password: passwordVal, address: addressVal });
+      showSuccess('Signup successful! Redirecting to login...');
+      setTimeout(function() {
+        window.location.href = 'login.html';
+      }, 1200);
+    };
+  </script>
+</body>
+</html>

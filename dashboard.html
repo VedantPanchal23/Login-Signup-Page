@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="centered-container">
+    <h1 id="greeting">Hi, User</h1>
+    <div class="dashboard-btns">
+      <button onclick="window.location.href='edit-profile.html'">Edit Profile</button>
+      <button onclick="window.location.href='change-password.html'">Change Password</button>
+      <button id="logoutBtn">Logout</button>
+    </div>
+  </div>
+  <script src="assets/script.js"></script>
+  <script>
+    const email = getCurrentUser();
+    if (!email) {
+      window.location.href = 'login.html';
+    } else {
+      const user = getUser(email);
+      document.getElementById('greeting').textContent = 'Hi, ' + (user?.name || 'User');
+    }
+    document.getElementById('logoutBtn').onclick = function() {
+      clearCurrentUser();
+      window.location.href = 'login.html';
+    };
+  </script>
+</body>
+</html>
